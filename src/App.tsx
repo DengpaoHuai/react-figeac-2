@@ -1,10 +1,11 @@
+import { RouterProvider } from "react-router-dom";
 import "./App.css";
-import PlanetList from "./components/PlanetList";
+import router from "./router/router";
 
 function App() {
   return (
     <div>
-      <PlanetList></PlanetList>
+      <RouterProvider router={router}></RouterProvider>
     </div>
   );
 }
