@@ -19,17 +19,20 @@ type Planet = {
 
 const PlanetList = () => {
   const [planets, setPlanets] = useState<Planet[]>([]);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    fetch("https://swapi.dev/api/planets")
+    fetch("https://swapi.dev/api/planets?page=" + page)
       .then((response) => {
         return response.json();
       })
       .then((data) => {
         console.log(data);
         setPlanets(data.results);
+        setTotal(data.count);
       });
-  }, []);
+  }, [page]);
 
   return (
     <div>
@@ -37,8 +40,22 @@ const PlanetList = () => {
       {planets.map((planet) => (
         <p key={planet.url}>{planet.name}</p>
       ))}
-      <button>précédent</button>
-      <button>suivant</button>
+      <button
+        disabled={page === 1}
+        onClick={() => {
+          setPage(page - 1);
+        }}
+      >
+        précédent
+      </button>
+      <button
+        disabled={page * 10 >= total}
+        onClick={() => {
+          setPage(page + 1);
+        }}
+      >
+        suivant
+      </button>
     </div>
   );
 };
