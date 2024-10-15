@@ -10,3 +10,8 @@ export const getFrenchFoods = async () => {
   const response = await crudcrud.get("/frenchfood");
   return response.data;
 };
+
+export const deleteFrenchFood = async (id: string) => {
+  const response = await crudcrud.delete(`/frenchfood/${id}`);
+  return response;
+};
