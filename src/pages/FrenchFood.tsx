@@ -1,10 +1,17 @@
-import { useContext } from "react";
-import { FrenchFoodContext } from "../contexts/FrenchFoodContext";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import ModalComponent from "../components/ModalComponent";
+import useFrenchFoodStore from "../store/useFrenchFoodStore";
+import { getFrenchFoods } from "../services/frenchfood.service";
 
 const FrenchFoodList = () => {
-  const { frenchFood, deleteItem } = useContext(FrenchFoodContext);
+  const { frenchFood, setFrenchFood } = useFrenchFoodStore();
+
+  useEffect(() => {
+    if (frenchFood.length > 0) return;
+    getFrenchFoods().then((data) => {
+      setFrenchFood(data);
+    });
+  }, []);
 
   return (
     <div>
@@ -17,11 +24,12 @@ const FrenchFoodList = () => {
           <p>{frenchfood.price}</p>
           <button
             onClick={() => {
-              deleteItem(frenchfood._id);
+              // deleteItem(frenchfood._id);
             }}
           >
             Delete
           </button>
+          <Link to={`/edit_french_food/${frenchfood._id}`}>Edit</Link>
         </div>
       ))}
     </div>

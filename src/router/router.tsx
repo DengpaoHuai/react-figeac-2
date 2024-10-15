@@ -21,6 +21,10 @@ const router = createBrowserRouter([
     path: "/frenchfoods",
     element: <FrenchFood></FrenchFood>,
   },
+  {
+    path: "/edit_french_food/:id",
+    ///  element: <FrenchFood></FrenchFood>,
+  },
 ]);
 
 export default router;

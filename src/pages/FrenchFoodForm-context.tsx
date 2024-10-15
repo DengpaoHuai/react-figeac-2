@@ -1,13 +1,13 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { frenchFoodSchema } from "../schemas/frenchfood.schema";
 import { useNavigate } from "react-router-dom";
 import { FrenchFood } from "../types/frenchFood.types";
+import { useContext } from "react";
+import { FrenchFoodContext } from "../contexts/FrenchFoodContext";
 import { useModal } from "../contexts/ModalContextProvider";
 import InputTextDemo from "../components/ui/InputTextDemo";
 import useCustomForm from "../hooks/useCustomForm";
-import useFrenchFoodStore from "../store/useFrenchFoodStore";
-import { createFrenchFood } from "../services/frenchfood.service";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 //type FrenchFood = z.infer<typeof frenchFoodSchema>;
 
@@ -16,22 +16,14 @@ const FrenchFoodForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Omit<FrenchFood, "_id">>({
-    defaultValues: {
-      name: "",
-      description: "",
-      price: 0,
-    },
-    resolver: zodResolver(frenchFoodSchema),
-  });
+  } = useCustomForm<Omit<FrenchFood, "_id">>(frenchFoodSchema);
 
   const navigate = useNavigate();
   const { openModal } = useModal();
-  const { addFrenchFood } = useFrenchFoodStore();
+  const { addFrenchFood } = useContext(FrenchFoodContext);
 
   const onSubmit = (data: Omit<FrenchFood, "_id">) => {
-    createFrenchFood(data).then((response) => {
-      addFrenchFood(response);
+    addFrenchFood(data).then(() => {
       openModal("Le plat a bien été ajouté", "success");
       navigate("/frenchfoods");
     });
@@ -41,12 +33,18 @@ const FrenchFoodForm = () => {
     <div className="">
       <h1>French Food Form</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor="food">Name :</label>
-        <input type="text" id="food" {...register("name")} />
+        <InputTextDemo
+          id="name"
+          label="Name :"
+          {...register("name")}
+        ></InputTextDemo>
         {errors.name && <p>{errors.name.message}</p>}
         <br />
-        <label htmlFor="description">Description :</label>
-        <input type="text" id="description" {...register("description")} />
+        <InputTextDemo
+          id="description"
+          label="Description :"
+          {...register("description")}
+        ></InputTextDemo>
         {errors.description && <p>{errors.description.message}</p>}
         <br />
         <label htmlFor="price">Price :</label>

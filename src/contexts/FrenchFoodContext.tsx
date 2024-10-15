@@ -4,7 +4,6 @@ import {
   createFrenchFood,
   deleteFrenchFood,
 } from "../services/frenchfood.service";
-import ModalComponent from "../components/ModalComponent";
 
 type FrenchFoodContextType = {
   frenchFood: FrenchFood[];

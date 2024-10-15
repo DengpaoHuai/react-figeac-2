@@ -10,3 +10,13 @@ https://react.dev/learn/react-developer-tools
 3. Afficher la modal en dur par dessus TOUTES les pages
 4. Conditionner l'affichage via des méthodes que vous allez partager via le context
 5. Personnaliser le contenu (titre, description)
+
+/////////////////
+
+1. Ajouter la suppression
+2. Créer la page d'edit
+3. Ajouter une fonction qui permet de récupérer un french food en fonction de son id dans le store zustand
+4. pré-remplir les champs du formulaire (uniquement en provenance de la liste, pas de refresh)
+5. Gérer l'update aurpès de crudcrud
+
+-> alternative : styliser les derniers TP avec primereact
