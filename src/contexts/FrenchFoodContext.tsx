@@ -1,16 +1,20 @@
 import { createContext, useEffect, useState } from "react";
 import { FrenchFood } from "../types/frenchFood.types";
-import { createFrenchFood } from "../services/frenchfood.service";
+import {
+  createFrenchFood,
+  deleteFrenchFood,
+} from "../services/frenchfood.service";
+import ModalComponent from "../components/ModalComponent";
 
 type FrenchFoodContextType = {
   frenchFood: FrenchFood[];
   addFrenchFood: (frenchfood: Omit<FrenchFood, "_id">) => Promise<void>;
+  deleteItem: (id: string) => Promise<void>;
 };
 
-export const FrenchFoodContext = createContext<FrenchFoodContextType>({
-  frenchFood: [],
-  addFrenchFood: async (frenchfood: Omit<FrenchFood, "_id">) => {},
-});
+export const FrenchFoodContext = createContext<FrenchFoodContextType>(
+  {} as FrenchFoodContextType
+);
 
 const FrenchFoodContextProvider = ({
   children,
@@ -39,11 +43,17 @@ const FrenchFoodContextProvider = ({
     setFrenchFood([...frenchFood, french]);
   };
 
+  const deleteItem = async (id: string) => {
+    await deleteFrenchFood(id);
+    setFrenchFood(frenchFood.filter((f) => f._id !== id));
+  };
+
   return (
     <FrenchFoodContext.Provider
       value={{
         frenchFood,
         addFrenchFood,
+        deleteItem,
       }}
     >
       {children}

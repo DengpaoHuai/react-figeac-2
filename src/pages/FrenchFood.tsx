@@ -1,9 +1,10 @@
 import { useContext } from "react";
 import { FrenchFoodContext } from "../contexts/FrenchFoodContext";
 import { Link } from "react-router-dom";
+import ModalComponent from "../components/ModalComponent";
 
 const FrenchFoodList = () => {
-  const { frenchFood } = useContext(FrenchFoodContext);
+  const { frenchFood, deleteItem } = useContext(FrenchFoodContext);
 
   return (
     <div>
@@ -14,7 +15,13 @@ const FrenchFoodList = () => {
           <h2>{frenchfood.name}</h2>
           <p>{frenchfood.description}</p>
           <p>{frenchfood.price}</p>
-          <button>Delete</button>
+          <button
+            onClick={() => {
+              deleteItem(frenchfood._id);
+            }}
+          >
+            Delete
+          </button>
         </div>
       ))}
     </div>
