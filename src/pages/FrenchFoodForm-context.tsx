@@ -1,5 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { frenchFoodSchema } from "../schemas/frenchfood.schema";
 import { useNavigate } from "react-router-dom";
 import { FrenchFood } from "../types/frenchFood.types";

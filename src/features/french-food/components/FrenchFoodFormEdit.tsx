@@ -1,38 +1,42 @@
-import { frenchFoodSchema } from "../schemas/frenchfood.schema";
-import { useNavigate } from "react-router-dom";
-import { FrenchFood } from "../types/frenchFood.types";
-import { useModal } from "../contexts/ModalContextProvider";
-import InputTextDemo from "../components/ui/InputTextDemo";
-import useCustomForm from "../hooks/useCustomForm";
-import useFrenchFoodStore from "../store/useFrenchFoodStore";
-import { createFrenchFood } from "../services/frenchfood.service";
+import { frenchFoodSchema } from "../../../schemas/frenchfood.schema";
+import { useNavigate, useParams } from "react-router-dom";
+import { FrenchFood } from "../../../types/frenchFood.types";
+import { useModal } from "../../../contexts/ModalContextProvider";
+import { updateFrenchFood } from "../../../services/frenchfood.service";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import useFrenchFoods from "../api/get-french-foods";
 
 //type FrenchFood = z.infer<typeof frenchFoodSchema>;
 
-const FrenchFoodForm = () => {
+const FrenchFoodFormEdit = () => {
+  const { id } = useParams();
+  const { data } = useFrenchFoods();
+  const itemToEdit = data?.find((item) => item._id === id);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Omit<FrenchFood, "_id">>({
     defaultValues: {
-      name: "",
-      description: "",
-      price: 0,
+      name: itemToEdit?.name,
+      description: itemToEdit?.description,
+      price: itemToEdit?.price,
     },
     resolver: zodResolver(frenchFoodSchema),
   });
 
   const navigate = useNavigate();
   const { openModal } = useModal();
-  const { addFrenchFood } = useFrenchFoodStore();
 
   const onSubmit = (data: Omit<FrenchFood, "_id">) => {
-    createFrenchFood(data).then((response) => {
-      addFrenchFood(response);
-      openModal("Le plat a bien été ajouté", "success");
+    updateFrenchFood(id as string, data).then(() => {
+      /* updateFrench({
+        _id: id as string,
+        ...data,
+      });*/
+      openModal("Le plat a bien été modifié", "success");
       navigate("/frenchfoods");
     });
   };
@@ -59,4 +63,4 @@ const FrenchFoodForm = () => {
   );
 };
 
-export default FrenchFoodForm;
+export default FrenchFoodFormEdit;

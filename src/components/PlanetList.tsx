@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Button } from "primereact/button";
+import { Fragment, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 type Planet = {
@@ -25,32 +27,24 @@ type PlanetResponse = {
   results: Planet[];
 };
 
+const getPlanets = async (page: number) => {
+  const response = await fetch("https://swapi.dev/api/planets?page=" + page);
+  return response.json();
+};
+
 const PlanetList = () => {
-  const [planetResponse, setPlanetResponse] = useState<PlanetResponse>({
-    count: 0,
-    next: null,
-    previous: null,
-    results: [],
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = useQuery<PlanetResponse>({
+    queryKey: ["planets", page],
+    queryFn: () => getPlanets(page),
   });
-  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
-
-  const getPlanets = async (url: string) => {
-    setLoading(true);
-    const response = await fetch(url);
-    const data = await response.json();
-    setPlanetResponse(data);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    getPlanets("https://swapi.dev/api/planets/");
-  }, []);
 
   return (
     <div>
       <a href="/demo">Demo</a>
-      <Link to="/demo">Demo</Link>
+      <Link to="/french-foods">french-foods</Link>
 
       <button
         onClick={() => {
@@ -61,36 +55,27 @@ const PlanetList = () => {
         redirect
       </button>
       <h1>Planet List</h1>
-      {loading && <p>Loading...</p>}
-      {planetResponse.results.map((planet) => (
-        <p key={planet.url}>{planet.name}</p>
+      {isLoading && <p>Loading...</p>}
+      {data?.results.map((planet) => (
+        <Fragment key={planet.url}>
+          <p>{planet.name}</p>
+          <p>{planet.population}</p>
+        </Fragment>
       ))}
-      <button
-        disabled={!planetResponse.previous}
-        onClick={() =>
-          planetResponse.previous && getPlanets(planetResponse.previous)
-        }
+      <Button
+        onClick={() => {
+          setPage(page - 1);
+        }}
       >
-        précédent
-      </button>
-      {Array.from({ length: Math.ceil(planetResponse.count / 10) }).map(
-        (_, index) => (
-          <button
-            key={index}
-            onClick={() =>
-              getPlanets(`https://swapi.dev/api/planets/?page=${index + 1}`)
-            }
-          >
-            {index + 1}
-          </button>
-        )
-      )}
-      <button
-        disabled={!planetResponse.next}
-        onClick={() => planetResponse.next && getPlanets(planetResponse.next)}
+        previous
+      </Button>
+      <Button
+        onClick={() => {
+          setPage(page + 1);
+        }}
       >
-        suivant
-      </button>
+        next
+      </Button>
     </div>
   );
 };

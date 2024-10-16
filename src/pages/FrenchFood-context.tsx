@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { FrenchFoodContext } from "../contexts/FrenchFoodContext";
 import { Link } from "react-router-dom";
-import ModalComponent from "../components/ModalComponent";
 import { ModalContext } from "../contexts/ModalContextProvider";
 import { Button } from "primereact/button";
 

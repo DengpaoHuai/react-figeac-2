@@ -3,8 +3,7 @@ import { deleteFrenchFood } from "../services/frenchfood.service";
 import { FrenchFood } from "../types/frenchFood.types";
 
 const FrenchFoodList = () => {
-  const { data, refetch, isLoading, error } =
-    useFetch<FrenchFood[]>("frenchfood");
+  const { data } = useFetch<FrenchFood[]>("frenchfood");
 
   const deleteItam = (id: string) => {
     deleteFrenchFood(id).then(() => {

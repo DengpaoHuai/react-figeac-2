@@ -1,17 +1,8 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import useFrenchFoodStore from "../store/useFrenchFoodStore";
-import { getFrenchFoods } from "../services/frenchfood.service";
 
 const FrenchFoodList = () => {
-  const { frenchFood, setFrenchFood } = useFrenchFoodStore();
-
-  useEffect(() => {
-    if (frenchFood.length > 0) return;
-    getFrenchFoods().then((data) => {
-      setFrenchFood(data);
-    });
-  }, []);
+  const { frenchFood, deleteFrenchFood } = useFrenchFoodStore();
 
   return (
     <div>
@@ -24,7 +15,7 @@ const FrenchFoodList = () => {
           <p>{frenchfood.price}</p>
           <button
             onClick={() => {
-              // deleteItem(frenchfood._id);
+              deleteFrenchFood(frenchfood._id);
             }}
           >
             Delete
