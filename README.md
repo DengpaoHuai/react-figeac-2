@@ -20,3 +20,5 @@ https://react.dev/learn/react-developer-tools
 5. Gérer l'update aurpès de crudcrud
 
 -> alternative : styliser les derniers TP avec primereact
+
+https://github.com/DengpaoHuai/react-advanced-demo
