@@ -1,6 +1,10 @@
 const DemoComponent = () => {
   return (
-    <div>
+    <div
+      style={{
+        height: "500vh",
+      }}
+    >
       <h1>Hello World</h1>
     </div>
   );

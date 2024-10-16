@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "primereact/button";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 type Planet = {
@@ -41,9 +41,23 @@ const PlanetList = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const handleScroll = () => {
+      console.log("scroll");
+    };
+    document.addEventListener("scroll", handleScroll);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <div>
-      <a href="/demo">Demo</a>
+    <div
+      style={{
+        height: "500vh",
+      }}
+    >
+      <Link to="/demo">Demo</Link>
       <Link to="/french-foods">french-foods</Link>
 
       <button
